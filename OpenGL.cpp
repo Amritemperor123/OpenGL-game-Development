@@ -202,9 +202,10 @@ int main()
 
 
 	// SHADER INIT
-	GLuint core_program;
-	if (!loadShaders(core_program))
-		glfwTerminate();
+	Shader core_program("vertex_core.glsl", "fragment_core.glsl");
+	// GLuint core_program;
+	// if (!loadShaders(core_program))
+		// glfwTerminate();
 
 	// MODEL
 	
@@ -227,10 +228,10 @@ int main()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	// SET VERTEX ATTRIBUTE POINTERS AND ENABLE (INPUT ASSEMBLY)
-	GLuint positionLoc = glGetAttribLocation(core_program, "vertex_position");
-	GLuint colorLoc = glGetAttribLocation(core_program, "vertex_color");
-	GLuint textcoordLoc = glGetAttribLocation(core_program, "vertex_textcoord");
-	GLuint normalLoc = glGetAttribLocation(core_program, "vertex_normal");
+	GLuint positionLoc = glGetAttribLocation(core_program.getID(), "vertex_position");
+	GLuint colorLoc = glGetAttribLocation(core_program.getID(), "vertex_color");
+	GLuint textcoordLoc = glGetAttribLocation(core_program.getID(), "vertex_textcoord");
+	GLuint normalLoc = glGetAttribLocation(core_program.getID(), "vertex_normal");
 
 	glVertexAttribPointer(positionLoc, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, position));
 	glEnableVertexAttribArray(positionLoc);
@@ -245,32 +246,7 @@ int main()
 	glBindVertexArray(0);
 
 	// TEXTURE INIT
-	int image_height = 0;
-	int image_width = 0;
-	unsigned char* image = SOIL_load_image("image/image.png", &image_width, &image_height, NULL, SOIL_LOAD_RGBA);
-
-	GLuint texture0;
-	glGenTextures(1, &texture0);
-	glBindTexture(GL_TEXTURE_2D, texture0);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-	if (image)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image_width, image_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "ERROR::TEXTURE_IMAGE_LOAD_FAILED\n";	
-	}
-
-	glActiveTexture(0);
-	glBindTexture(GL_TEXTURE_2D, 0);
-	SOIL_free_image_data(image);
+	Texture texture0("image/image.png", GL_TEXTURE_2D);
 
 	// Model Matrix
 	glm::vec3 position(0.f);
@@ -304,16 +280,12 @@ int main()
 	glm::vec3 lightPos0(0.f, 0.f, 2.f);
 
 	// INIT UNIFORMS
-	glUseProgram(core_program);
+	core_program.setMat4fv(ModelMatrix, "ModelMatrix");
+	core_program.setMat4fv(ViewMatrix, "ViewMatrix");
+	core_program.setMat4fv(ProjectionMatrix, "ProjectionMatrix");
 
-	glUniformMatrix4fv(glGetUniformLocation(core_program, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix));
-	glUniformMatrix4fv(glGetUniformLocation(core_program, "ViewMatrix"), 1, GL_FALSE, glm::value_ptr(ViewMatrix));
-	glUniformMatrix4fv(glGetUniformLocation(core_program, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix));
-
-	glUniform3fv(glGetUniformLocation(core_program, "lightPos0"), 1, glm::value_ptr(lightPos0));
-	glUniform3fv(glGetUniformLocation(core_program, "camPos"), 1, glm::value_ptr(camPos));
-
-	glUseProgram(0);
+	core_program.setVec3f(lightPos0, "lightPos0");
+	core_program.setVec3f(camPos, "camPos");
 
 	// MAIN LOOP
 	while (!glfwWindowShouldClose(window))
@@ -329,11 +301,8 @@ int main()
 		glClearColor(0.f, 0.f, 0.f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-		// use a program
-		glUseProgram(core_program);
-
 		// update uniforms
-		glUniform1i(glGetUniformLocation(core_program, "texture0"), 0);
+		core_program.set1i(0, "texture0");
 		
 		// move, rotate, scale
 		ModelMatrix = glm::mat4(1.f);
@@ -344,7 +313,7 @@ int main()
 		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
 		ModelMatrix = glm::scale(ModelMatrix, scale);
 
-		glUniformMatrix4fv(glGetUniformLocation(core_program, "ModelMatrix"), 1, GL_FALSE, glm::value_ptr(ModelMatrix));
+		core_program.setMat4fv(ModelMatrix, "ModelMatrix");
 
 		glfwGetFramebufferSize(window, &frameBufferWidth, &frameBufferHeight);
 
@@ -353,11 +322,14 @@ int main()
 			nearplane,
 			farplane
 		);
-		glUniformMatrix4fv(glGetUniformLocation(core_program, "ProjectionMatrix"), 1, GL_FALSE, glm::value_ptr(ProjectionMatrix));
+		core_program.setMat4fv(ProjectionMatrix, "ProjectionMatrix");
+
+		// use a program
+		core_program.use();
 
 		// activate texture
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture0);
+		glBindTexture(GL_TEXTURE_2D, texture0.getID());
 
 		// bind vertex array object
 		glBindVertexArray(VAO);
@@ -372,16 +344,13 @@ int main()
 
 		glBindVertexArray(0);
 		glUseProgram(0);
-		glActiveTexture(0);
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	};
 
 	// END OF PROGRAM
 	glfwDestroyWindow(window);
 	glfwTerminate();
-
-	// Delete Program
-	glDeleteProgram(core_program);
 
 	return 0;
 }
