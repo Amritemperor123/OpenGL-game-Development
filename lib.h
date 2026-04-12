@@ -15,15 +15,12 @@
 #include<glm/vec4.hpp>
 #include<glm/mat4x4.hpp>
 
-#include<SOIL2/SOIL2.h>
-
 #include"shader.h"
-#include"texture.h"
+#include"model_placeholder.h"
 
 struct Vertex
 {
 	glm::vec3 position;
 	glm::vec3 color;
-	glm::vec2 textcoord;
 	glm::vec3 normal;
 };
