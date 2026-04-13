@@ -16,11 +16,13 @@
 #include<glm/mat4x4.hpp>
 
 #include"shader.h"
-//#include"model_placeholder.h"
 
 struct Vertex
 {
 	glm::vec3 position;
 	glm::vec3 color;
 	glm::vec3 normal;
+	glm::vec2 texCoord;
 };
+
+#include"model_placeholder.h"

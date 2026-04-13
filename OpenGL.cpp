@@ -1,61 +1,10 @@
 #include"lib.h"
 
-Vertex vertices[] =
-{
-	// Front face
-	{ glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(0.9f, 0.2f, 0.2f), glm::vec3(0.f, 0.f, 1.f) },
-	{ glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(0.9f, 0.2f, 0.2f), glm::vec3(0.f, 0.f, 1.f) },
-	{ glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.9f, 0.2f, 0.2f), glm::vec3(0.f, 0.f, 1.f) },
-	{ glm::vec3(-0.5f, 0.5f, 0.5f), glm::vec3(0.9f, 0.2f, 0.2f), glm::vec3(0.f, 0.f, 1.f) },
-
-	// Back face
-	{ glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(0.2f, 0.7f, 0.9f), glm::vec3(0.f, 0.f, -1.f) },
-	{ glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.2f, 0.7f, 0.9f), glm::vec3(0.f, 0.f, -1.f) },
-	{ glm::vec3(-0.5f, 0.5f, -0.5f), glm::vec3(0.2f, 0.7f, 0.9f), glm::vec3(0.f, 0.f, -1.f) },
-	{ glm::vec3(0.5f, 0.5f, -0.5f), glm::vec3(0.2f, 0.7f, 0.9f), glm::vec3(0.f, 0.f, -1.f) },
-
-	// Left face
-	{ glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.2f, 0.9f, 0.4f), glm::vec3(-1.f, 0.f, 0.f) },
-	{ glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(0.2f, 0.9f, 0.4f), glm::vec3(-1.f, 0.f, 0.f) },
-	{ glm::vec3(-0.5f, 0.5f, 0.5f), glm::vec3(0.2f, 0.9f, 0.4f), glm::vec3(-1.f, 0.f, 0.f) },
-	{ glm::vec3(-0.5f, 0.5f, -0.5f), glm::vec3(0.2f, 0.9f, 0.4f), glm::vec3(-1.f, 0.f, 0.f) },
-
-	// Right face
-	{ glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(0.9f, 0.8f, 0.2f), glm::vec3(1.f, 0.f, 0.f) },
-	{ glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(0.9f, 0.8f, 0.2f), glm::vec3(1.f, 0.f, 0.f) },
-	{ glm::vec3(0.5f, 0.5f, -0.5f), glm::vec3(0.9f, 0.8f, 0.2f), glm::vec3(1.f, 0.f, 0.f) },
-	{ glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.9f, 0.8f, 0.2f), glm::vec3(1.f, 0.f, 0.f) },
-
-	// Top face
-	{ glm::vec3(-0.5f, 0.5f, 0.5f), glm::vec3(0.7f, 0.3f, 0.9f), glm::vec3(0.f, 1.f, 0.f) },
-	{ glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.7f, 0.3f, 0.9f), glm::vec3(0.f, 1.f, 0.f) },
-	{ glm::vec3(0.5f, 0.5f, -0.5f), glm::vec3(0.7f, 0.3f, 0.9f), glm::vec3(0.f, 1.f, 0.f) },
-	{ glm::vec3(-0.5f, 0.5f, -0.5f), glm::vec3(0.7f, 0.3f, 0.9f), glm::vec3(0.f, 1.f, 0.f) },
-
-	// Bottom face
-	{ glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.3f, 0.6f, 0.9f), glm::vec3(0.f, -1.f, 0.f) },
-	{ glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(0.3f, 0.6f, 0.9f), glm::vec3(0.f, -1.f, 0.f) },
-	{ glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(0.3f, 0.6f, 0.9f), glm::vec3(0.f, -1.f, 0.f) },
-	{ glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(0.3f, 0.6f, 0.9f), glm::vec3(0.f, -1.f, 0.f) }
-};
-
-GLuint indices[] =
-{
-	0, 1, 2, 0, 2, 3,
-	4, 5, 6, 4, 6, 7,
-	8, 9, 10, 8, 10, 11,
-	12, 13, 14, 12, 14, 15,
-	16, 17, 18, 16, 18, 19,
-	20, 21, 22, 20, 22, 23
-};
-
-unsigned nrOfIndices = sizeof(indices) / sizeof(GLuint);
-
 struct OrbitCamera
 {
 	float yaw = -90.f;
 	float pitch = -20.f;
-	float distance = 6.f;
+	float distance = 18.f;
 	float sensitivity = 0.12f;
 	float minPitch = -80.f;
 	float maxPitch = 80.f;
@@ -159,8 +108,8 @@ int main()
 {
 	glfwInit();
 
-	const int WINDOW_HEIGHT = 1080;
-	const int WINDOW_WIDTH = 1920;
+	const int WINDOW_HEIGHT = 480;
+	const int WINDOW_WIDTH = 640;
 	int frameBufferHeight = 0;
 	int frameBufferWidth = 0;
 
@@ -194,44 +143,27 @@ int main()
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CCW);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	Shader core_program("vertex_core.glsl", "fragment_core.glsl");
 
-	/*ModelPlaceholder modelPlaceholder;
-	modelPlaceholder.printStatus();*/
-
-	GLuint VAO = 0;
-	GLuint VBO = 0;
-	GLuint EBO = 0;
-
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-
-	glBindVertexArray(VAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, position));
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, color));
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, normal));
-	glEnableVertexAttribArray(2);
-
-	glBindVertexArray(0);
+	ModelPlaceholder planeModel;
+	if (!planeModel.loadFromFile("assets/models/Plane.obj") || !planeModel.uploadToGpu())
+	{
+		std::cerr << "ERROR::MAIN::MODEL_LOAD_FAILED\n";
+		glfwDestroyWindow(window);
+		glfwTerminate();
+		return -1;
+	}
+	planeModel.printStatus();
 
 	glm::vec3 position(0.f);
 	glm::vec3 rotation(0.f);
 	glm::vec3 scale(1.f);
+	gOrbitTarget = position;
+	gCamera.distance = glm::max(planeModel.boundingRadius * 2.2f, 8.f);
+	gCamera.minDistance = glm::max(planeModel.boundingRadius * 0.2f, 1.5f);
+	gCamera.maxDistance = glm::max(planeModel.boundingRadius * 8.f, 40.f);
 
 	glm::vec3 worldUp(0.f, 1.f, 0.f);
 	glm::vec3 camTarget(0.f, 0.f, 0.f);
@@ -248,7 +180,11 @@ int main()
 		farplane
 	);
 
-	glm::vec3 lightPos0(2.f, 3.f, 2.f);
+	glm::vec3 lightPos0(
+		planeModel.boundingRadius * 0.8f,
+		(planeModel.maxBounds.y - planeModel.modelCenter.y) + planeModel.boundingRadius * 1.2f,
+		planeModel.boundingRadius * 0.8f
+	);
 
 	core_program.setMat4fv(ViewMatrix, "ViewMatrix");
 	core_program.setMat4fv(ProjectionMatrix, "ProjectionMatrix");
@@ -272,6 +208,7 @@ int main()
 		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.y), glm::vec3(0.f, 1.f, 0.f));
 		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(rotation.z), glm::vec3(0.f, 0.f, 1.f));
 		ModelMatrix = glm::scale(ModelMatrix, scale);
+		ModelMatrix = glm::translate(ModelMatrix, -planeModel.modelCenter);
 
 		core_program.setMat4fv(ModelMatrix, "ModelMatrix");
 		core_program.setMat4fv(ViewMatrix, "ViewMatrix");
@@ -287,18 +224,14 @@ int main()
 		core_program.setMat4fv(ProjectionMatrix, "ProjectionMatrix");
 
 		core_program.use();
-		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, nrOfIndices, GL_UNSIGNED_INT, 0);
+		planeModel.draw();
 
 		glfwSwapBuffers(window);
 
-		glBindVertexArray(0);
 		glUseProgram(0);
 	}
 
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
+	planeModel.releaseGpu();
 	glfwDestroyWindow(window);
 	glfwTerminate();
 
