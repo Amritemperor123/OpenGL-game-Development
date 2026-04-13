@@ -201,8 +201,8 @@ int main()
 
 	Shader core_program("vertex_core.glsl", "fragment_core.glsl");
 
-	ModelPlaceholder modelPlaceholder;
-	modelPlaceholder.printStatus();
+	/*ModelPlaceholder modelPlaceholder;
+	modelPlaceholder.printStatus();*/
 
 	GLuint VAO = 0;
 	GLuint VBO = 0;

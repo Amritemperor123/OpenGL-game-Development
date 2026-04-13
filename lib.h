@@ -16,7 +16,7 @@
 #include<glm/mat4x4.hpp>
 
 #include"shader.h"
-#include"model_placeholder.h"
+//#include"model_placeholder.h"
 
 struct Vertex
 {
